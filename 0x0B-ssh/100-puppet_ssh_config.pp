@@ -1,5 +1,4 @@
 # Setting up my client config file
-include stdlib
 
 file_line { 'ignore passwd auth':
   ensure  => present,
@@ -11,6 +10,6 @@ file_line { 'ignore passwd auth':
 file_line { 'set identity file':
   ensure  => present,
   path    => '/etc/ssh/ssh_config',
-  line    => 'IdentifyFile ~/.ssh/school
+  line    => 'IdentifyFile ~/.ssh/school',
   replace => true,
 }
