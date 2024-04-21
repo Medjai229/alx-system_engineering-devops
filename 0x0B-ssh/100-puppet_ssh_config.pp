@@ -1,4 +1,5 @@
 # Setting up my client config file
+include stdlib
 
 file_line { 'ignore passwd auth':
   ensure  => present,
