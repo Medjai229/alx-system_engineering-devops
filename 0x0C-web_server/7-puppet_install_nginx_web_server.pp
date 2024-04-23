@@ -1,13 +1,13 @@
 # add a stable nginx version
 exec { 'add nginx stable repo':
   command => 'sudo add-apt-repository ppa:nginx/stable',
-  path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 }
 
 # update software packages
 exec { 'update packages':
   command => 'apt-get update',
-  path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 }
 
 # install nginx
@@ -18,14 +18,14 @@ package { 'nginx':
 # allow http
 exec { 'allow HTTP':
   command => "ufw allow 'Nginx HTTP'",
-  path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
   onlyif  => '! dpkg -l nginx | egrep \'îi.*nginx\' > /dev/null 2>&1',
 }
 
 # change folder permissions
 exec { 'chmod www':
   command => 'chmod -R 755 /var/www',
-  path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 }
 
 # index file
@@ -40,8 +40,8 @@ file { '/var/www/html/error_404.html':
 
 # nginx config file
 file { 'Nginx default config file':
-  ensure => file,
-  path => '/etc/nginx/sites-enabled/default',
+  ensure  => file,
+  path    => '/etc/nginx/sites-enabled/default',
   content =>
 "server {
      listen      80 default_server;
@@ -65,11 +65,11 @@ file { 'Nginx default config file':
 # restart nginx
 exec { 'restart nginx':
   command => 'service nginx restart',
-  path => '/usr/bin:/usr/sbin:/bin',
+  path    => '/usr/bin:/usr/sbin:/bin',
 }
 
 # start nginx
 service { 'nginx':
-  ensure => running,
+  ensure  => running,
   require => Package['nginx'],
 }
