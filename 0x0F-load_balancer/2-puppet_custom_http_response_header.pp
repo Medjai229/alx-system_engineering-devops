@@ -1,76 +1,25 @@
-# add a stable nginx version
-exec { 'add nginx stable repo':
-  command => 'sudo add-apt-repository ppa:nginx/stable',
-  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+# Script that configures a brand new Ubuntu machine and creates a custom HTTP header response
+
+exec {'update':
+  provider => shell,
+  command  => 'sudo apt-get -y update',
+  before   => Exec['install Nginx'],
 }
 
-# update software packages
-exec { 'update packages':
-  command => 'apt-get update',
-  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+exec {'install Nginx':
+  provider => shell,
+  command  => 'sudo apt-get -y install nginx',
+  before   => Exec['add_header'],
 }
 
-# install nginx
-package { 'nginx':
-  ensure => 'installed',
+exec { 'add_header':
+  provider    => shell,
+  environment => ["HOST=${hostname}"],
+  command     => 'sudo sed -i "s/include \/etc\/nginx\/sites-enabled\/\*;/include \/etc\/nginx\/sites-enabled\/\*;\n\tadd_header X-Served-By \"$HOST\";/" /etc/nginx/nginx.conf',
+  before      => Exec['restart Nginx'],
 }
 
-# allow http
-exec { 'allow HTTP':
-  command => "ufw allow 'Nginx HTTP'",
-  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-  onlyif  => '! dpkg -l nginx | egrep \'îi.*nginx\' > /dev/null 2>&1',
-}
-
-# change folder permissions
-exec { 'chmod www':
-  command => 'chmod -R 755 /var/www',
-  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-}
-
-# index file
-file { '/var/www/html/index.html':
-  content => 'Hello World!\n',
-}
-
-# error 404 file
-file { '/var/www/html/error_404.html':
-  content => 'Ceci n\'est pas une page\n',
-}
-
-# nginx config file
-file { 'Nginx default config file':
-  ensure  => file,
-  path    => '/etc/nginx/sites-enabled/default',
-  content =>
-"server {
-     listen      80 default_server;
-     listen      [::]:80 default_server;
-     root        /var/www/html;
-     index       index.html index.nginix-debian.html index.htm;
-     add_header X-Served-By $HOSTNAME;
-
-     location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=dQw4w9WgXcQ;
-     }
-
-     error_page 404 /error_404.html;
-     location /error_404 {
-        root /var/www/html;
-	internal;
-     }
-}
-",
-}
-
-# restart nginx
-exec { 'restart nginx':
-  command => 'service nginx restart',
-  path    => '/usr/bin:/usr/sbin:/bin',
-}
-
-# start nginx
-service { 'nginx':
-  ensure  => running,
-  require => Package['nginx'],
+exec { 'restart Nginx':
+  provider => shell,
+  command  => 'sudo service nginx restart',
 }
