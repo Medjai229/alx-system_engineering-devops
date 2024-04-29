@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Bash script that Install nginx on your web-01
+
+apt-get -y update
+apt-get -y install nginx
+
+echo "Hello World!" > /var/www/html/index.html
+
+touch /var/www/html/error_404.html
+echo "Ceci n'est pas une page" > /var/www/html/error_404.html
+
+printf %s "server {
+     listen      80 default_server;
+     listen      [::]:80 default_server;
+     root        /var/www/html;
+     index       index.html index.nginix-debian.html index.htm;
+     add_header X-Served-By $HOSTNAME;
+
+     location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=dQw4w9WgXcQ;
+     }
+
+     error_page 404 /error_404.html;
+     location /error_404 {
+        root /var/www/html;
+	internal;
+     }
+}
+" > /etc/nginx/sites-available/default
+
+service nginx restart
