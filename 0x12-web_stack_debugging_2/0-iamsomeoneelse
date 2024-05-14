@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# this script run software as another user
+sudo --user "$1" whoami
