@@ -1,14 +1,38 @@
 #!/usr/bin/python3
-"""Returns to-do list information for a given employee ID."""
+"""Gather data from an API"""
 import requests
 import sys
 
-if __name__ == "__main__":
-    url = "https://jsonplaceholder.typicode.com/"
-    user = requests.get(url + "users/{}".format(int(sys.argv[1]))).json()
-    todos = requests.get(url + "todos", params={"userId": int(sys.argv[1])}).json()
 
-    completed = [t.get("title") for t in todos if t.get("completed") is True]
-    print("Employee {} is done with tasks({}/{}):".format(
-        user.get("name"), len(completed), len(todos)))
-    [print("\t {}".format(c)) for c in completed]
+def fetch_data(employeeId):
+    """Fetch data from jsonplaceholder API"""
+    employee = requests.get(
+        f"https://jsonplaceholder.typicode.com/users/{employeeId}"
+    ).json()
+    todos = requests.get(
+        f"https://jsonplaceholder.typicode.com/todos?userId={employeeId}"
+    ).json()
+    return (employee, todos)
+
+
+def display_tasks(employeeId):
+    """Display employee's tasks information"""
+    employee, todos = fetch_data(employeeId)
+    completed_titles = []
+    for todo in todos:
+        if todo.get("completed") is True:
+            completed_titles.append(todo.get("title"))
+    print(
+        f"Employee {employee.get('name')} is done with "
+        f"tasks({len(completed_titles)}/{len(todos)}):"
+    )
+    [print(f"\t {todo}") for todo in completed_titles]
+
+
+if __name__ == "__main__":
+    if len(sys.argv) == 2 and sys.argv[1].isdigit():
+        employeeId = int(sys.argv[1])
+        display_tasks(employeeId)
+    else:
+        print(f"Usage: {sys.argv[0]} <employee_id>")
+        exit(1)
