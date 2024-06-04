@@ -16,7 +16,7 @@ def recurse(subreddit, hot_list=[], after="", count=0):
 
     url = f"https://www.reddit.com/r/{subreddit}/hot/.json"
     header = {"User-Agent":
-              "Reddit First 10 Hot posts v1.0 (https://github.com/Medjai229)"}
+              "Reddit Hot posts titles v1.0 (https://github.com/Medjai229)"}
     param = {"after": after, "count": count}
     response = session.get(url, headers=header, params=param,
                            allow_redirects=False)
