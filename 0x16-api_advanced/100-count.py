@@ -11,6 +11,11 @@ def count_words(subreddit, word_list, instances={}, after="", count=0):
     parses the title of all hot articles
     and prints a sorted count of given keywords
     """
+    if not instances:
+        for word in word_list:
+            if word.lower() not in instances:
+                instances[word.lower()] = 0
+
     session = requests.Session()
     session.timeout = 5
 
