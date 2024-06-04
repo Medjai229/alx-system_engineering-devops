@@ -18,16 +18,17 @@ def count_words(subreddit, word_list, after=None, counts={}):
     session.timeout = 5
 
     url = f"https://www.reddit.com/r/{subreddit}/hot/.json"
-    header = {"User-Agent": "Reddit word search (https://github.com/Medjai229)"}
+    header = {"User-Agent": "Reddit hot search (https://github.com/Medjai229)"}
     params = {"limit": 100}
     if after:
         params["after"] = after
 
-    response = session.get(url, headers=header, params=params, allow_redirects=False)
-    
+    response = session.get(url, headers=header, params=params,
+                           allow_redirects=False)
+
     if response.status_code != 200:
         return
-    
+
     data = response.json()
     after = data["data"]["after"]
     hot_posts = data["data"]["children"]
