@@ -1,4 +1,7 @@
-# 0x19-Postmortem
+# Postmortem: Web Stack Outage - June 1, 2024
+
+![Outage Meme](https://i.imgflip.com/2/30b1gx.jpg)  
+*When your web app decides to take a nap during peak hours...*
 
 ## Issue Summary
 
@@ -51,4 +54,17 @@
 5. **Update Documentation:** Document the new connection pool settings and the rationale for their values.
 6. **Review Incident Response Plan:** Refine the incident response plan to ensure quicker identification of similar issues.
 
-By addressing these areas, we can prevent similar outages in the future and ensure a more robust and resilient web application infrastructure.
+---
+
+## Visualizing the Chaos
+
+![Timeline Diagram](https://imgur.com/gallery/when-everything-goes-wrong-life-i-dont-care-anymore-s5HOY)  
+*When everything that can go wrong, goes wrong... but we learn and grow!*
+
+## Fun Fact
+
+Did you know? The term "504 Gateway Timeout" is HTTP's way of saying, "I'm on a coffee break, be right back!"
+
+---
+
+By addressing these areas, we can prevent similar outages in the future and ensure a more robust and resilient web application infrastructure. Thank you for reading and remember: always double-check your connection pool settings before peak traffic hits!
