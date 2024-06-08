@@ -1,4 +1,4 @@
-# Postmortem: Web Stack Outage - June 1, 2024
+# 0x19-Postmortem
 
 ![Outage Meme](https://i.imgflip.com/2/30b1gx.jpg)  
 *When your web app decides to take a nap during peak hours...*
@@ -58,7 +58,7 @@
 
 ## Visualizing the Chaos
 
-![Timeline Diagram](https://imgur.com/gallery/when-everything-goes-wrong-life-i-dont-care-anymore-s5HOY)  
+![Timeline Diagram](https://i.imgflip.com/5m8klx.jpg)  
 *When everything that can go wrong, goes wrong... but we learn and grow!*
 
 ## Fun Fact
